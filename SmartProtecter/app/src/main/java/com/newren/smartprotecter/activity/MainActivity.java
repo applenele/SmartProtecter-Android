@@ -10,6 +10,10 @@ import com.newren.smartprotecter.R;
 
 public class MainActivity extends ActionBarActivity {
 
+    public void test(){
+        System.out.print("test");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
