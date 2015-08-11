@@ -14,6 +14,9 @@ public class MainActivity extends ActionBarActivity {
         System.out.print("test");
     }
 
+    public void test1(){
+        System.out.print("demo");
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
