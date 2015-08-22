@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/username_edit"
             android:layout_marginTop="3dp"
-            android:text="@string/login_label_password"
+           android:hint="@string/login_password_hint"
             style="@style/normalText"/>
         <EditText
             android:id="@+id/password_edit"
@@ -63,35 +63,6 @@
     </RelativeLayout>
 
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        >
-        <TextView  android:id="@+id/register_link"
-            android:text="@string/login_register_link"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:textColor="#888"
-            android:textColorLink="#FF0066CC"
-            />
-        <ImageView android:id="@+id/miniTwitter_logo"
-            android:src="@drawable/cat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="25dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="25dp"
-            />
-        <ImageView android:src="@drawable/logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/miniTwitter_logo"
-            android:layout_alignBottom="@id/miniTwitter_logo"
-            android:paddingBottom="8dp"
-            />
-    </RelativeLayout>
+
 
 </LinearLayout>
