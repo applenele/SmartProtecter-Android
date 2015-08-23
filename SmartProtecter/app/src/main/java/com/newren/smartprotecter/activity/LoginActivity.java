@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -53,13 +54,11 @@ public class LoginActivity extends Activity {
 
         btnLogin.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                HashMap<String, String> params = new HashMap<String, String>();
-                params.put("username", txtUsername.getText().toString());
-                params.put("password", txtPassword.getText().toString());
-                JSONObject jsonParams = new JSONObject(params);
+                String username =  txtUsername.getText().toString();
+               String  password  = txtPassword.getText().toString();
                 Log.d("TAG1", txtUsername.getText().toString());
-                String url = "http://121.42.136.4:9000/UserApi/Login";
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonParams,
+                String url = "http://121.42.136.4:9000/UserApi/Login?username="+username+"&password="+password;
+                JsonObjectRequest request = new JsonObjectRequest(url,null,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -81,13 +80,12 @@ public class LoginActivity extends Activity {
                         }
                 ) {
                     @Override
-                    public Map<String, String> getHeaders() {
+                    public Map<String, String> getHeaders() throws AuthFailureError {
                         HashMap<String, String> headers = new HashMap<String, String>();
                         headers.put("Accept", "application/json");
                         headers.put("Content-Type", "application/json; charset=UTF-8");
                         return headers;
                     }
-
                 };
                 QueueApplication.getHttpQueues().add(request);
             }
