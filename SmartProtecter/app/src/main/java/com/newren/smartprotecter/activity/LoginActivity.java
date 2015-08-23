@@ -1,6 +1,7 @@
 package com.newren.smartprotecter.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
@@ -64,8 +65,15 @@ public class LoginActivity extends Activity {
                             public void onResponse(JSONObject response) {
                                 try {
                                     String msg = response.getString("Msg");
-                                    MsgThread msgThread = new MsgThread(msg);
-                                    new Thread(msgThread).start();
+                                    String statu = response.getString("Statu");
+                                    if(statu.equals("ok")){
+                                        Intent intent=new Intent();
+                                        intent.setClass(LoginActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                    }else{
+                                        MsgThread msgThread = new MsgThread(msg);
+                                        new Thread(msgThread).start();
+                                    }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
