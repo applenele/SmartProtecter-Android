@@ -21,7 +21,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.newren.smartprotecter.R;
 import com.newren.smartprotecter.activity.MainActivity;
+import com.newren.smartprotecter.datamodel.DropAccidentType;
+import com.newren.smartprotecter.datamodel.DropBuilding;
 import com.newren.smartprotecter.datamodel.DropDistrict;
+import com.newren.smartprotecter.datamodel.DropFloor;
+import com.newren.smartprotecter.datamodel.DropRoom;
 import com.newren.smartprotecter.model.User;
 import com.newren.smartprotecter.util.QueueApplication;
 
@@ -40,10 +44,17 @@ import java.util.Map;
 public class FragmentPublishment extends Fragment {
     private View myView = null;
     private Spinner dropDistrict = null;
+    private Spinner dropBuilding = null;
+    private Spinner dropFloor  =null;
+    private Spinner dropRoom = null;
+    private Spinner dropAccidentType = null;
     private List<DropDistrict> DistrictArry = null;
-
-
+    private List<DropFloor> FloorArry = null;
+    private List<DropAccidentType> AccidentTypeArry = null;
     private ArrayAdapter<DropDistrict> districtAdapter;
+
+    private ArrayAdapter<DropFloor> floorAdapter;
+    private ArrayAdapter<DropAccidentType> accidentTypeAdapter;
 
     private Handler handler=new Handler(){
         public void handleMessage(Message msg){
@@ -66,7 +77,10 @@ public class FragmentPublishment extends Fragment {
 
         myView = inflater.inflate(R.layout.publishment, container, false);
         dropDistrict = (Spinner) myView.findViewById(R.id.dropDistrict);
-
+        dropBuilding = (Spinner) myView.findViewById(R.id.dropBuilding);
+        dropFloor  = (Spinner) myView.findViewById(R.id.dropFloor);
+        dropRoom = (Spinner) myView.findViewById(R.id.dropRoom);
+        dropAccidentType = (Spinner) myView.findViewById(R.id.dropAccidentType);
         String url = "http://121.42.136.4:9000/AccidentApi/GetDistricts";
         JsonObjectRequest request = new JsonObjectRequest(url,null,
                 new Response.Listener<JSONObject>() {
@@ -105,7 +119,7 @@ public class FragmentPublishment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        MsgThread msgThread = new MsgThread("���ִ���");
+                        MsgThread msgThread = new MsgThread("出现错误");
                         new Thread(msgThread).start();
                     }
                 }
@@ -119,6 +133,109 @@ public class FragmentPublishment extends Fragment {
             }
         };
         QueueApplication.getHttpQueues().add(request);
+
+        String floorurl = "http://121.42.136.4:9000/AccidentApi/GetFloors";
+        JsonObjectRequest floorrequest = new JsonObjectRequest(floorurl,null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            String msg = response.getString("Msg");
+                            String statu = response.getString("Statu");
+                            if(statu.equals("ok")){
+                                JSONArray obj = response.getJSONArray("Data");
+                                FloorArry = new ArrayList<DropFloor>();
+                                for(int i=0;i<obj.length();i++){
+                                    DropFloor floor = new DropFloor();
+                                    JSONObject oj = obj.getJSONObject(i);
+
+                                    Integer  id= oj.getInt("Id");
+                                    floor.setKey(id.toString());
+                                    floor.setValue(oj.getString("FloorName"));
+                                    FloorArry.add(floor);
+                                }
+                                Log.d("TAG1", DistrictArry.toArray().toString());
+
+                                floorAdapter = new ArrayAdapter<DropFloor>(getActivity().getBaseContext(),android.R.layout.simple_spinner_item,FloorArry);
+                                floorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                dropFloor.setAdapter(floorAdapter);
+                                dropFloor.setOnItemSelectedListener(dropFloorListener);
+                            }else{
+                                MsgThread msgThread = new MsgThread(msg);
+                                new Thread(msgThread).start();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        MsgThread msgThread = new MsgThread("出现错误");
+                        new Thread(msgThread).start();
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=UTF-8");
+                return headers;
+            }
+        };
+        QueueApplication.getHttpQueues().add(floorrequest);
+
+        String typeurl = "http://121.42.136.4:9000/AccidentApi/GetAccidentTypes";
+        JsonObjectRequest typeequest = new JsonObjectRequest(typeurl,null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            String msg = response.getString("Msg");
+                            String statu = response.getString("Statu");
+                            if(statu.equals("ok")){
+                                JSONArray obj = response.getJSONArray("Data");
+                                AccidentTypeArry = new ArrayList<DropAccidentType>();
+                                for(int i=0;i<obj.length();i++){
+                                    DropAccidentType type = new DropAccidentType();
+                                    JSONObject oj = obj.getJSONObject(i);
+
+                                    Integer  id= oj.getInt("ID");
+                                    type.setKey(id.toString());
+                                    type.setValue(oj.getString("AccidentName"));
+                                    AccidentTypeArry.add(type);
+                                }
+                                accidentTypeAdapter = new ArrayAdapter<DropAccidentType>(getActivity().getBaseContext(),android.R.layout.simple_spinner_item,AccidentTypeArry);
+                                accidentTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                dropAccidentType.setAdapter(accidentTypeAdapter);
+                            }else{
+                                MsgThread msgThread = new MsgThread(msg);
+                                new Thread(msgThread).start();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        MsgThread msgThread = new MsgThread("出现错误");
+                        new Thread(msgThread).start();
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=UTF-8");
+                return headers;
+            }
+        };
+        QueueApplication.getHttpQueues().add(typeequest);
 
         return myView;
     }
@@ -144,14 +261,16 @@ public class FragmentPublishment extends Fragment {
         }
     }
 
-    AdapterView.OnItemSelectedListener dropDistrictListener = new AdapterView.OnItemSelectedListener() {
+    AdapterView.OnItemSelectedListener dropFloorListener = new AdapterView.OnItemSelectedListener() {
+        private List<DropRoom> roomArr = null;
+        private ArrayAdapter<DropRoom> roomAdapter;
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             Spinner spinner = (Spinner)parent;
 
-            DropDistrict d =(DropDistrict) spinner.getSelectedItem() ;
-            String value= d.getKey();
-            String url = "http://121.42.136.4:9000/AccidentApi/GetDistricts";
+            DropFloor d =(DropFloor) spinner.getSelectedItem() ;
+            String key= d.getKey();
+            String url = "http://121.42.136.4:9000/AccidentApi/GetRooms/"+key;
             JsonObjectRequest request = new JsonObjectRequest(url,null,
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -161,22 +280,20 @@ public class FragmentPublishment extends Fragment {
                                 String statu = response.getString("Statu");
                                 if(statu.equals("ok")){
                                     JSONArray obj = response.getJSONArray("Data");
-                                    DistrictArry = new ArrayList<DropDistrict>();
+                                    roomArr = new ArrayList<DropRoom>();
                                     for(int i=0;i<obj.length();i++){
-                                        DropDistrict district = new DropDistrict();
+                                        DropRoom room = new DropRoom();
                                         JSONObject oj = obj.getJSONObject(i);
 
-                                        Integer  id= oj.getInt("ID");
-                                        district.setKey(id.toString());
-                                        district.setValue(oj.getString("SchoolDistrictName"));
-                                        DistrictArry.add(district);
+                                        Integer  id= oj.getInt("Id");
+                                        room.setKey(id.toString());
+                                        room.setValue(oj.getString("RoomNumber"));
+                                        roomArr.add(room);
                                     }
-                                    Log.d("TAG1", DistrictArry.toArray().toString());
-
-                                    districtAdapter = new ArrayAdapter<DropDistrict>(getActivity().getBaseContext(),android.R.layout.simple_spinner_item,DistrictArry);
-                                    districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                    dropDistrict.setAdapter(districtAdapter);
-                                    dropDistrict.setOnItemSelectedListener(dropDistrictListener);
+                                    roomAdapter = new ArrayAdapter<DropRoom>(getActivity().getBaseContext(),android.R.layout.simple_spinner_item,roomArr);
+                                    roomAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    dropRoom.setAdapter(roomAdapter);
+                                  //  dropBuilding.setOnItemSelectedListener(dropDistrictListener);
                                 }else{
                                     MsgThread msgThread = new MsgThread(msg);
                                     new Thread(msgThread).start();
@@ -189,7 +306,7 @@ public class FragmentPublishment extends Fragment {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            MsgThread msgThread = new MsgThread("���ִ���");
+                            MsgThread msgThread = new MsgThread("出现错误");
                             new Thread(msgThread).start();
                         }
                     }
@@ -211,4 +328,73 @@ public class FragmentPublishment extends Fragment {
         }
     };
 
+
+    AdapterView.OnItemSelectedListener dropDistrictListener = new AdapterView.OnItemSelectedListener() {
+        private List<DropBuilding> buildingArr = null;
+        private ArrayAdapter<DropBuilding> buildingAdapter;
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            Spinner spinner = (Spinner)parent;
+
+            DropDistrict d =(DropDistrict) spinner.getSelectedItem() ;
+            String key= d.getKey();
+            String url = "http://121.42.136.4:9000/AccidentApi/GetBuildings/"+key;
+            JsonObjectRequest request = new JsonObjectRequest(url,null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                String msg = response.getString("Msg");
+                                String statu = response.getString("Statu");
+                                if(statu.equals("ok")){
+                                    JSONArray obj = response.getJSONArray("Data");
+                                    buildingArr = new ArrayList<DropBuilding>();
+                                    for(int i=0;i<obj.length();i++){
+                                        DropBuilding building = new DropBuilding();
+                                        JSONObject oj = obj.getJSONObject(i);
+
+                                        Integer  id= oj.getInt("Id");
+                                        building.setKey(id.toString());
+                                        building.setValue(oj.getString("BuildName"));
+                                        buildingArr.add(building);
+                                    }
+                                    Log.d("TAG1", buildingArr.toArray().toString());
+
+                                    buildingAdapter = new ArrayAdapter<DropBuilding>(getActivity().getBaseContext(),android.R.layout.simple_spinner_item,buildingArr);
+                                    buildingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    dropBuilding.setAdapter(buildingAdapter);
+                                    //  dropBuilding.setOnItemSelectedListener(dropDistrictListener);
+                                }else{
+                                    MsgThread msgThread = new MsgThread(msg);
+                                    new Thread(msgThread).start();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            MsgThread msgThread = new MsgThread("出现错误");
+                            new Thread(msgThread).start();
+                        }
+                    }
+            ) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Accept", "application/json");
+                    headers.put("Content-Type", "application/json; charset=UTF-8");
+                    return headers;
+                }
+            };
+            QueueApplication.getHttpQueues().add(request);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
 }

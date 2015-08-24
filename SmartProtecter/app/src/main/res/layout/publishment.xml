@@ -24,34 +24,41 @@
         android:layout_height="wrap_content"
         android:text="@string/publishment_label_building"
         />
-    <EditText android:id="@+id/txtBuilding"
-        android:layout_width="fill_parent" android:layout_height="wrap_content">
-    </EditText>
+    <Spinner
+        android:id="@+id/dropBuilding"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/publishment_label_floor"
         />
-    <EditText android:id="@+id/txtFloor"
-        android:layout_width="fill_parent" android:layout_height="wrap_content">
-    </EditText>
+    <Spinner
+        android:id="@+id/dropFloor"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/publishment_label_room"
         />
-    <EditText android:id="@+id/txtRoom"
-        android:layout_width="fill_parent" android:layout_height="wrap_content">
-    </EditText>
+    <Spinner
+        android:id="@+id/dropRoom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/publishment_label_accidentType"
         />
-    <EditText android:id="@+id/txtAccidentType"
-        android:layout_width="fill_parent" android:layout_height="wrap_content">
-    </EditText>
-
+    <Spinner
+        android:id="@+id/dropAccidentType"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -61,9 +68,9 @@
         android:layout_width="fill_parent" android:layout_height="wrap_content">
     </EditText>
     <Button
-        android:id="@+id/btn"
+        android:id="@+id/btnPublish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="登陆"
+        android:text="发布"
         />
 </LinearLayout>
