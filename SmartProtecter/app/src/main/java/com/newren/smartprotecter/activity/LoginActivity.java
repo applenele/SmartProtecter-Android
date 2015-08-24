@@ -58,7 +58,7 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 String username =  txtUsername.getText().toString();
                String  password  = txtPassword.getText().toString();
-                Log.d("TAG1", txtUsername.getText().toString());
+
                 String url = "http://121.42.136.4:9000/UserApi/Login?username="+username+"&password="+password;
                 JsonObjectRequest request = new JsonObjectRequest(url,null,
                         new Response.Listener<JSONObject>() {
@@ -67,7 +67,7 @@ public class LoginActivity extends Activity {
                                 try {
                                     String msg = response.getString("Msg");
                                     String statu = response.getString("Statu");
-
+                                    Log.d("TAG1", response.toString());
                                     if(statu.equals("ok")){
                                         JSONObject obj = response.getJSONObject("Data");
                                         User user = new User();

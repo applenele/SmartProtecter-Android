@@ -61,6 +61,7 @@ public class FragmentMe extends Fragment {
         txtName.setText(user.getName());
         txtNumber.setText(user.getNumber());
         txtSex.setText(Common.sexDisply[user.getSexAsInt()]);
+
         txtRole.setText(Common.roleDisply[user.getRoleAsInt()]);
 
 
