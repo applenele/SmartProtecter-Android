@@ -1,11 +1,11 @@
 package com.newren.smartprotecter.model;
 
 /**
- * Created by ÀÖ on 2015/8/24.
+ * Created by ï¿½ï¿½ on 2015/8/24.
  */
 public class Common {
 
-    public static String[] roleDisply = new String[]{"Ñ§Éú","½ÌÊ¦","Ò»°ã¹ÜÀíÔ±","³¬¼¶¹ÜÀíÔ±"};
+    public static String[] roleDisply = new String[]{"å­¦ç”Ÿ","æ•™å¸ˆ","ä¸€èˆ¬ç®¡ç†å‘˜","è¶…çº§ç®¡ç†å‘˜"};
 
-    public static String[] sexDisply = new String[]{"ÄĞ","Å®"};
+    public static String[] sexDisply = new String[]{"ç”·","å¥³"};
 }
