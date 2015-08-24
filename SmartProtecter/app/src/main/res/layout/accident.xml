@@ -4,10 +4,8 @@
     android:layout_height="match_parent">
 
 
-    <TextView
-        android:layout_width="69dp"
-        android:layout_height="50dp"
-        android:text="事故"
-        android:id="@+id/textView"
-        android:layout_gravity="center_horizontal" />
+    <ListView
+        android:id="@+id/lstAccident"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
 </LinearLayout>
