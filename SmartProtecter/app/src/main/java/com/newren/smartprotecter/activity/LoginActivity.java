@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.newren.smartprotecter.R;
+import com.newren.smartprotecter.model.User;
 import com.newren.smartprotecter.util.QueueApplication;
 
 import org.json.JSONException;
@@ -66,7 +67,17 @@ public class LoginActivity extends Activity {
                                 try {
                                     String msg = response.getString("Msg");
                                     String statu = response.getString("Statu");
+
                                     if(statu.equals("ok")){
+                                        JSONObject obj = response.getJSONObject("Data");
+                                        User user = new User();
+                                        user.setId(obj.getInt("ID"));
+                                        user.setNumber(obj.getString("Number"));
+                                        user.setName(obj.getString("Username"));
+                                        user.setPassword(obj.getString("Password"));
+                                        user.setRoleAsInt(obj.getInt("RoleAsInt"));
+                                        user.setSexAsInt(obj.getInt("SexAsInt"));
+                                        QueueApplication.setUser(user);
                                         Intent intent=new Intent();
                                         intent.setClass(LoginActivity.this, MainActivity.class);
                                         startActivity(intent);

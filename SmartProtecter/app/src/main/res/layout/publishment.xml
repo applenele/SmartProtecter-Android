@@ -1,11 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
     <TextView
-        android:layout_width="69dp"
-        android:layout_height="50dp"
-        android:text="publishment"
-        android:id="@+id/textView"
-        android:layout_gravity="center_horizontal" />
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/publishment_title"
+        />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/publishment_label_district"
+        />
+    <EditText android:id="@+id/txtDistrict"
+        android:layout_width="fill_parent" android:layout_height="wrap_content">
+    </EditText>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/publishment_label_building"
+        />
+    <EditText android:id="@+id/txtBuilding"
+        android:layout_width="fill_parent" android:layout_height="wrap_content">
+    </EditText>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/publishment_label_floor"
+        />
+    <EditText android:id="@+id/txtFloor"
+        android:layout_width="fill_parent" android:layout_height="wrap_content">
+    </EditText>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/publishment_label_room"
+        />
+    <EditText android:id="@+id/txtRoom"
+        android:layout_width="fill_parent" android:layout_height="wrap_content">
+    </EditText>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/publishment_label_accidentType"
+        />
+    <EditText android:id="@+id/txtAccidentType"
+        android:layout_width="fill_parent" android:layout_height="wrap_content">
+    </EditText>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/publishment_label_description"
+        />
+    <EditText android:id="@+id/txtDescription"
+        android:layout_width="fill_parent" android:layout_height="wrap_content">
+    </EditText>
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="登陆"
+        />
 </LinearLayout>

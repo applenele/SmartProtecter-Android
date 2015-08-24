@@ -12,4 +12,13 @@
     <string name="login_status_logging_in">登录中...</string>
     <string name="login_username_hint">学号或者学工号</string>
     <string name="login_password_hint">密码</string>
+
+    <string name="publishment_title">发布事故</string>
+    <string name="publishment_label_district">校区</string>
+    <string name="publishment_label_building">楼宇</string>
+    <string name="publishment_label_floor">楼层</string>
+    <string name="publishment_label_room">房间</string>
+    <string name="publishment_label_accidentType">事故类型</string>
+    <string name="publishment_label_description">描述</string>
+
 </resources>
