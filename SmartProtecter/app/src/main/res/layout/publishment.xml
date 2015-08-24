@@ -8,14 +8,17 @@
         android:layout_height="wrap_content"
         android:text="@string/publishment_title"
         />
+
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/publishment_label_district"
         />
-    <EditText android:id="@+id/txtDistrict"
-        android:layout_width="fill_parent" android:layout_height="wrap_content">
-    </EditText>
+    <Spinner
+        android:id="@+id/dropDistrict"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

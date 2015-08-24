@@ -20,5 +20,6 @@
     <string name="publishment_label_room">房间</string>
     <string name="publishment_label_accidentType">事故类型</string>
     <string name="publishment_label_description">描述</string>
+    <string name="title_activity_test">TestActivity</string>
 
 </resources>

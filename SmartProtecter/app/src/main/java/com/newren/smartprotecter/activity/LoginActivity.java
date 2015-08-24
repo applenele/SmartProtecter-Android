@@ -57,7 +57,7 @@ public class LoginActivity extends Activity {
         btnLogin.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 String username =  txtUsername.getText().toString();
-               String  password  = txtPassword.getText().toString();
+                String  password  = txtPassword.getText().toString();
 
                 String url = "http://121.42.136.4:9000/UserApi/Login?username="+username+"&password="+password;
                 JsonObjectRequest request = new JsonObjectRequest(url,null,
