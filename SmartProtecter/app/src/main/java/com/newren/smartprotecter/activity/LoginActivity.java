@@ -106,6 +106,7 @@ public class LoginActivity extends Activity {
                         return headers;
                     }
                 };
+
                 QueueApplication.getHttpQueues().add(request);
             }
         });

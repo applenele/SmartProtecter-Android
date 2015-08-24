@@ -35,6 +35,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -103,15 +106,21 @@ public class FragmentPublishment extends Fragment {
                 String sroom  = room.getValue();
                 String stype = type.getValue();
                 Integer uid = QueueApplication.getUser().getId();
-                String publishmenturl = "http://121.42.136.4:9000/AccidentApi/Publishment?districtId="+districtId+"&buildingId="+buildingId+"&uid="+uid+"&floor="+sfloor+"&room="+sroom+"&type="+stype+"&description="+description;
-                JsonObjectRequest publishmentrequest = new JsonObjectRequest(publishmenturl,null,
+                String params = null;
+                try {
+                    params = "districtId="+districtId+"&buildingId="+buildingId+"&uid="+uid+"&floor="+ URLEncoder.encode(sfloor, "UTF-8")+"&room="+URLEncoder.encode(sroom,"UTF-8")+"&type="+URLEncoder.encode(stype,"UTF-8")+"&description="+URLEncoder.encode(description);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                String publishmenturl = "http://121.42.136.4:9000/AccidentApi/Publishment?"+params;
+                Log.i("ad",publishmenturl);
+                JsonObjectRequest publishmentrequest = new JsonObjectRequest(publishmenturl+params,null,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
                                 try {
                                     String msg = response.getString("Msg");
                                     String statu = response.getString("Statu");
-                                    Log.d("TAG1", response.toString());
                                     if(statu.equals("ok")){
                                         FragmentAccident accident = new FragmentAccident();
                                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_content, accident).commit();
@@ -140,6 +149,7 @@ public class FragmentPublishment extends Fragment {
                         return headers;
                     }
                 };
+
                 QueueApplication.getHttpQueues().add(publishmentrequest);
             }
         });
