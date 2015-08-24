@@ -108,13 +108,13 @@ public class FragmentPublishment extends Fragment {
                 Integer uid = QueueApplication.getUser().getId();
                 String params = null;
                 try {
-                    params = "districtId="+districtId+"&buildingId="+buildingId+"&uid="+uid+"&floor="+ URLEncoder.encode(sfloor, "UTF-8")+"&room="+URLEncoder.encode(sroom,"UTF-8")+"&type="+URLEncoder.encode(stype,"UTF-8")+"&description="+URLEncoder.encode(description);
+                    params = "districtId="+districtId+"&buildingId="+buildingId+"&uid="+uid+"&floor="+ URLEncoder.encode(sfloor, "UTF-8")+"&room="+URLEncoder.encode(sroom,"UTF-8")+"&type="+URLEncoder.encode(stype,"UTF-8")+"&description="+URLEncoder.encode(description,"UTF-8");
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
                 String publishmenturl = "http://121.42.136.4:9000/AccidentApi/Publishment?"+params;
-                Log.i("ad",publishmenturl);
-                JsonObjectRequest publishmentrequest = new JsonObjectRequest(publishmenturl+params,null,
+
+                JsonObjectRequest publishmentrequest = new JsonObjectRequest(publishmenturl,null,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
