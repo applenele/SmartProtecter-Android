@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -43,6 +45,8 @@ import java.util.Map;
  */
 public class FragmentPublishment extends Fragment {
     private View myView = null;
+    private Button btnPublish =null;
+    private TextView txtDescription = null;
     private Spinner dropDistrict = null;
     private Spinner dropBuilding = null;
     private Spinner dropFloor  =null;
@@ -76,11 +80,70 @@ public class FragmentPublishment extends Fragment {
         // TODO Auto-generated method stub
 
         myView = inflater.inflate(R.layout.publishment, container, false);
+        btnPublish = (Button) myView.findViewById(R.id.btnPublish);
+        txtDescription = (TextView) myView.findViewById(R.id.txtDescription);
         dropDistrict = (Spinner) myView.findViewById(R.id.dropDistrict);
         dropBuilding = (Spinner) myView.findViewById(R.id.dropBuilding);
         dropFloor  = (Spinner) myView.findViewById(R.id.dropFloor);
         dropRoom = (Spinner) myView.findViewById(R.id.dropRoom);
         dropAccidentType = (Spinner) myView.findViewById(R.id.dropAccidentType);
+
+        btnPublish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DropDistrict d =(DropDistrict) dropDistrict.getSelectedItem() ;
+                DropBuilding building = (DropBuilding) dropBuilding.getSelectedItem() ;
+                DropFloor floor = (DropFloor) dropFloor.getSelectedItem();
+                DropRoom room = (DropRoom) dropRoom.getSelectedItem();
+                DropAccidentType type = (DropAccidentType) dropAccidentType.getSelectedItem();
+                String description = txtDescription.getText().toString();
+                String buildingId = building.getKey();
+                String districtId = d.getKey();
+                String sfloor = floor.getValue();
+                String sroom  = room.getValue();
+                String stype = type.getValue();
+                Integer uid = QueueApplication.getUser().getId();
+                String publishmenturl = "http://121.42.136.4:9000/AccidentApi/Publishment?districtId="+districtId+"&buildingId="+buildingId+"&uid="+uid+"&floor="+sfloor+"&room="+sroom+"&type="+stype+"&description="+description;
+                JsonObjectRequest publishmentrequest = new JsonObjectRequest(publishmenturl,null,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    String msg = response.getString("Msg");
+                                    String statu = response.getString("Statu");
+                                    Log.d("TAG1", response.toString());
+                                    if(statu.equals("ok")){
+                                        FragmentAccident accident = new FragmentAccident();
+                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_content, accident).commit();
+                                    }else{
+                                        MsgThread msgThread = new MsgThread(msg);
+                                        new Thread(msgThread).start();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                MsgThread msgThread = new MsgThread("出现错误");
+                                new Thread(msgThread).start();
+                            }
+                        }
+                ) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Accept", "application/json");
+                        headers.put("Content-Type", "application/json; charset=UTF-8");
+                        return headers;
+                    }
+                };
+                QueueApplication.getHttpQueues().add(publishmentrequest);
+            }
+        });
+
         String url = "http://121.42.136.4:9000/AccidentApi/GetDistricts";
         JsonObjectRequest request = new JsonObjectRequest(url,null,
                 new Response.Listener<JSONObject>() {
@@ -397,4 +460,6 @@ public class FragmentPublishment extends Fragment {
 
         }
     };
+
+
 }
