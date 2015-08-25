@@ -5,8 +5,8 @@
     android:layout_height="fill_parent">
 
     <ImageView android:id="@+id/imgSatu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dip"
+        android:layout_height="60dip"
         android:layout_margin="5px"
         android:src="@drawable/cat"
         />
