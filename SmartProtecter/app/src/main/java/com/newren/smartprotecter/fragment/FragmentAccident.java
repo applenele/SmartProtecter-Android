@@ -88,7 +88,12 @@ public class FragmentAccident extends Fragment {
                                     accident.setDescription(oj.getString("Description"));
                                     accident.setTime(oj.get("Time").toString());
 
-                                    Log.i("yy", oj.getString("Time"));
+                                    accident.setDistrict(oj.getString("District"));
+                                    accident.setBuilding(oj.getString("Building"));
+                                    accident.setFloor(oj.getString("Floor"));
+                                    accident.setRoom(oj.getString("Room"));
+                                    accident.setType(oj.getString("AccidentType"));
+                                    accident.setStatuAsInt(oj.getInt("Statu"));
                                     items.add(accident);
                                 }
                                 adapter = new ListAccidentAdapter(getActivity(), items);
@@ -152,6 +157,12 @@ public class FragmentAccident extends Fragment {
                                                      accident.setId(id);
                                                      accident.setDescription(oj.getString("Description"));
                                                      accident.setTime(oj.get("Time").toString());
+                                                     accident.setDistrict(oj.getString("District"));
+                                                     accident.setBuilding(oj.getString("Building"));
+                                                     accident.setFloor(oj.getString("Floor"));
+                                                     accident.setRoom(oj.getString("Room"));
+                                                     accident.setType(oj.getString("AccidentType"));
+                                                     accident.setStatuAsInt(oj.getInt("Statu"));
                                                      list.add(accident);
                                                  }
                                                  items.addAll(list);

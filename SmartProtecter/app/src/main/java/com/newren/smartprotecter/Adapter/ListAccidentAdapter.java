@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.newren.smartprotecter.R;
@@ -50,12 +51,28 @@ public class ListAccidentAdapter extends BaseAdapter {
         if (view == null) {
             view = inflater.inflate(R.layout.list_accident, null);
         }
+        Accident item = items.get(position);
         TextView description = (TextView) view.findViewById(R.id.txtDescription);
         TextView time = (TextView) view.findViewById(R.id.txtTime);
+        TextView address = (TextView) view.findViewById(R.id.txtAddress);
+        TextView type = (TextView) view.findViewById(R.id.txtType);
+        ImageView statu = (ImageView) view.findViewById(R.id.imgSatu);
         description.setText(items.get(position).getDescription());
         time.setText(items.get(position).getTime().toString());
+        address.setText(item.getDistrict()+"-"+item.getBuilding()+"-"+item.getFloor()+"-"+item.getRoom());
+        type.setText(item.getType());
+        if(item.getStatuAsInt()==0){
+            statu.setImageResource(R.drawable.untreated);
+        }
+        if(item.getStatuAsInt()==1){
+            statu.setImageResource(R.drawable.treating);
+        }
+        if(item.getStatuAsInt()==2){
+            statu.setImageResource(R.drawable.treated);
+        }
         return view;
     }
+
 
 
 }

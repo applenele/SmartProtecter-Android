@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <ImageView android:id="@+id/img"
+    <ImageView android:id="@+id/imgSatu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5px"
@@ -20,10 +20,20 @@
             android:layout_height="wrap_content"
             android:textColor="#FFFFFFFF"
             android:textSize="22px" />
+        <TextView android:id="@+id/txtAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFFFF"
+            android:textSize="22px" />
+        <TextView android:id="@+id/txtType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFFFF"
+            android:textSize="22px" />
         <TextView android:id="@+id/txtDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#FFFFFFFF"
-            android:textSize="13px" />
+            android:textSize="22px" />
     </LinearLayout>
 </LinearLayout>
