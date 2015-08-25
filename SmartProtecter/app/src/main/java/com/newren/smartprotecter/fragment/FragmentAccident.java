@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,13 +34,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by �� on 2015/8/24.
+ * Created by �� on 2015/8/24.
  */
 public class FragmentAccident extends Fragment {
     private View myView;
     private ListAccidentAdapter adapter;
     private ListView lv;
     private List<Accident> items = null;
+    private  Integer page = 0;
+    private  User user = QueueApplication.getUser();
     private Handler handler=new Handler(){
         public void handleMessage(Message msg){
             Toast toast= Toast.makeText(getActivity(), msg.obj.toString(), Toast.LENGTH_SHORT);
@@ -61,9 +64,7 @@ public class FragmentAccident extends Fragment {
         myView = inflater.inflate(R.layout.accident, container, false);
         lv = (ListView) myView.findViewById(R.id.lstAccident);
 
-        User user = QueueApplication.getUser();
-        String url = "http://121.42.136.4:9000/AccidentApi/GetAccidents?uid="+user.getId();
-
+        String url = "http://121.42.136.4:9000/AccidentApi/GetAccidents?uid="+user.getId()+"&page="+page;
         JsonObjectRequest request = new JsonObjectRequest(url,null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -85,6 +86,7 @@ public class FragmentAccident extends Fragment {
                                 }
                                 adapter = new ListAccidentAdapter(getActivity(), items);
                                 lv.setAdapter(adapter);
+                                page++;
                             }else{
                                 MsgThread msgThread = new MsgThread(msg);
                                 new Thread(msgThread).start();
@@ -97,7 +99,7 @@ public class FragmentAccident extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        MsgThread msgThread = new MsgThread("���ִ���");
+                        MsgThread msgThread = new MsgThread("出现错误");
                         new Thread(msgThread).start();
                     }
                 }
@@ -112,6 +114,77 @@ public class FragmentAccident extends Fragment {
         };
         QueueApplication.getHttpQueues().add(request);
 
+         lv.setOnScrollListener(new AbsListView.OnScrollListener() {
+             @Override
+             public void onScrollStateChanged(AbsListView view, int scrollState) {
+                 //MsgThread thread = new MsgThread("xialaceshi ");
+                 //new Thread(thread).start();
+
+                 String url = "http://121.42.136.4:9000/AccidentApi/GetAccidents?uid="+user.getId()+"&page="+page;
+                 Log.i("yy1",url);
+                 JsonObjectRequest request = new JsonObjectRequest(url,null,
+                         new Response.Listener<JSONObject>() {
+                             @Override
+                             public void onResponse(JSONObject response) {
+                                 try {
+                                     String msg = response.getString("Msg");
+                                     String statu = response.getString("Statu");
+                                     if(statu.equals("ok")){
+                                         JSONArray obj = response.getJSONArray("Data");
+
+                                         List<Accident> list = new ArrayList<Accident>();
+                                         if(obj.length()<=0){
+                                              MsgThread thread = new MsgThread("没有更多数据了");
+                                              new Thread(thread).start();
+                                              return ;
+                                         }
+                                         Log.i("yy",obj.toString());
+                                         for(int i=0;i<obj.length();i++){
+                                             Accident accident = new Accident();
+                                             JSONObject oj = obj.getJSONObject(i);
+                                             Integer  id= oj.getInt("ID");
+                                             accident.setId(id);
+                                             accident.setDescription(oj.getString("Description"));
+                                             list.add(accident);
+                                         }
+                                         items.addAll(list);
+                                         adapter.bindData(items);
+                                         adapter.notifyDataSetChanged();
+                                         page++;
+                                     }else{
+                                         MsgThread msgThread = new MsgThread(msg);
+                                         new Thread(msgThread).start();
+                                     }
+                                 } catch (JSONException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         },
+                         new Response.ErrorListener() {
+                             @Override
+                             public void onErrorResponse(VolleyError error) {
+                                 MsgThread msgThread = new MsgThread("出现错误");
+                                 new Thread(msgThread).start();
+                             }
+                         }
+                 ) {
+                     @Override
+                     public Map<String, String> getHeaders() throws AuthFailureError {
+                         HashMap<String, String> headers = new HashMap<String, String>();
+                         headers.put("Accept", "application/json");
+                         headers.put("Content-Type", "application/json; charset=UTF-8");
+                         return headers;
+                     }
+                 };
+
+                 QueueApplication.getHttpQueues().add(request);
+             }
+
+             @Override
+             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+             }
+         });
 
         return myView;
     }

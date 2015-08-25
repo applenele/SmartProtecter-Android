@@ -26,6 +26,10 @@ public class ListAccidentAdapter extends BaseAdapter {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    public void bindData(List<Accident> items){
+        this.items = items;
+    }
+
     @Override
     public int getCount() {
         return items.size();
