@@ -23,7 +23,7 @@ public class Accident  {
 
     private String Description;
 
-    private Date time;
+    private String time;
 
     private Integer statuAsInt;
 
@@ -91,11 +91,11 @@ public class Accident  {
         Description = description;
     }
 
-    public Date getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

@@ -50,8 +50,10 @@ public class ListAccidentAdapter extends BaseAdapter {
         if (view == null) {
             view = inflater.inflate(R.layout.list_accident, null);
         }
-        TextView text = (TextView) view.findViewById(R.id.list_item_text);
-        text.setText(items.get(position).getDescription());
+        TextView description = (TextView) view.findViewById(R.id.txtDescription);
+        TextView time = (TextView) view.findViewById(R.id.txtTime);
+        description.setText(items.get(position).getDescription());
+        time.setText(items.get(position).getTime().toString());
         return view;
     }
 

@@ -93,7 +93,7 @@ public class LoginActivity extends Activity {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                MsgThread msgThread = new MsgThread("³öÏÖ´íÎó");
+                                MsgThread msgThread = new MsgThread("å‡ºçŽ°å¼‚å¸¸");
                                 new Thread(msgThread).start();
                             }
                         }

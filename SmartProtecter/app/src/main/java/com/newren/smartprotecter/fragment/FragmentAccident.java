@@ -28,6 +28,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +44,7 @@ public class FragmentAccident extends Fragment {
     private ListView lv;
     private List<Accident> items = null;
     private  Integer page = 0;
+    private boolean lock = false;
     private  User user = QueueApplication.getUser();
     private Handler handler=new Handler(){
         public void handleMessage(Message msg){
@@ -63,7 +66,8 @@ public class FragmentAccident extends Fragment {
 
         myView = inflater.inflate(R.layout.accident, container, false);
         lv = (ListView) myView.findViewById(R.id.lstAccident);
-
+        page =0;
+        lock = false;
         String url = "http://121.42.136.4:9000/AccidentApi/GetAccidents?uid="+user.getId()+"&page="+page;
         JsonObjectRequest request = new JsonObjectRequest(url,null,
                 new Response.Listener<JSONObject>() {
@@ -75,13 +79,16 @@ public class FragmentAccident extends Fragment {
                             String statu = response.getString("Statu");
                             if(statu.equals("ok")){
                                 JSONArray obj = response.getJSONArray("Data");
-                                Log.i("yy",obj.toString());
+                                java.text.DateFormat format1 = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                                 for(int i=0;i<obj.length();i++){
                                     Accident accident = new Accident();
                                     JSONObject oj = obj.getJSONObject(i);
                                     Integer  id= oj.getInt("ID");
                                     accident.setId(id);
                                     accident.setDescription(oj.getString("Description"));
+                                    accident.setTime(oj.get("Time").toString());
+
+                                    Log.i("yy", oj.getString("Time"));
                                     items.add(accident);
                                 }
                                 adapter = new ListAccidentAdapter(getActivity(), items);
@@ -119,65 +126,67 @@ public class FragmentAccident extends Fragment {
              public void onScrollStateChanged(AbsListView view, int scrollState) {
                  //MsgThread thread = new MsgThread("xialaceshi ");
                  //new Thread(thread).start();
+                 if(!lock){
+                     String url = "http://121.42.136.4:9000/AccidentApi/GetAccidents?uid="+user.getId()+"&page="+page;
+                     Log.i("yy1",url);
+                     JsonObjectRequest request = new JsonObjectRequest(url,null,
+                             new Response.Listener<JSONObject>() {
+                                 @Override
+                                 public void onResponse(JSONObject response) {
+                                     try {
+                                         String msg = response.getString("Msg");
+                                         String statu = response.getString("Statu");
+                                         if(statu.equals("ok")){
+                                             JSONArray obj = response.getJSONArray("Data");
 
-                 String url = "http://121.42.136.4:9000/AccidentApi/GetAccidents?uid="+user.getId()+"&page="+page;
-                 Log.i("yy1",url);
-                 JsonObjectRequest request = new JsonObjectRequest(url,null,
-                         new Response.Listener<JSONObject>() {
-                             @Override
-                             public void onResponse(JSONObject response) {
-                                 try {
-                                     String msg = response.getString("Msg");
-                                     String statu = response.getString("Statu");
-                                     if(statu.equals("ok")){
-                                         JSONArray obj = response.getJSONArray("Data");
-
-                                         List<Accident> list = new ArrayList<Accident>();
-                                         if(obj.length()<=0){
-                                              MsgThread thread = new MsgThread("没有更多数据了");
-                                              new Thread(thread).start();
-                                              return ;
+                                             List<Accident> list = new ArrayList<Accident>();
+                                             if(obj.length()<=0){
+                                                 lock = true;
+                                                 MsgThread thread = new MsgThread("没有更多数据了");
+                                                 new Thread(thread).start();
+                                             }else{
+                                                 for(int i=0;i<obj.length();i++){
+                                                     Accident accident = new Accident();
+                                                     JSONObject oj = obj.getJSONObject(i);
+                                                     Integer  id= oj.getInt("ID");
+                                                     accident.setId(id);
+                                                     accident.setDescription(oj.getString("Description"));
+                                                     accident.setTime(oj.get("Time").toString());
+                                                     list.add(accident);
+                                                 }
+                                                 items.addAll(list);
+                                                 adapter.bindData(items);
+                                                 adapter.notifyDataSetChanged();
+                                                 page++;
+                                             }
+                                         }else{
+                                             MsgThread msgThread = new MsgThread(msg);
+                                             new Thread(msgThread).start();
                                          }
-                                         Log.i("yy",obj.toString());
-                                         for(int i=0;i<obj.length();i++){
-                                             Accident accident = new Accident();
-                                             JSONObject oj = obj.getJSONObject(i);
-                                             Integer  id= oj.getInt("ID");
-                                             accident.setId(id);
-                                             accident.setDescription(oj.getString("Description"));
-                                             list.add(accident);
-                                         }
-                                         items.addAll(list);
-                                         adapter.bindData(items);
-                                         adapter.notifyDataSetChanged();
-                                         page++;
-                                     }else{
-                                         MsgThread msgThread = new MsgThread(msg);
-                                         new Thread(msgThread).start();
+                                     } catch (JSONException e) {
+                                         e.printStackTrace();
                                      }
-                                 } catch (JSONException e) {
-                                     e.printStackTrace();
+                                 }
+                             },
+                             new Response.ErrorListener() {
+                                 @Override
+                                 public void onErrorResponse(VolleyError error) {
+                                     MsgThread msgThread = new MsgThread("出现错误");
+                                     new Thread(msgThread).start();
                                  }
                              }
-                         },
-                         new Response.ErrorListener() {
-                             @Override
-                             public void onErrorResponse(VolleyError error) {
-                                 MsgThread msgThread = new MsgThread("出现错误");
-                                 new Thread(msgThread).start();
-                             }
+                     ) {
+                         @Override
+                         public Map<String, String> getHeaders() throws AuthFailureError {
+                             HashMap<String, String> headers = new HashMap<String, String>();
+                             headers.put("Accept", "application/json");
+                             headers.put("Content-Type", "application/json; charset=UTF-8");
+                             return headers;
                          }
-                 ) {
-                     @Override
-                     public Map<String, String> getHeaders() throws AuthFailureError {
-                         HashMap<String, String> headers = new HashMap<String, String>();
-                         headers.put("Accept", "application/json");
-                         headers.put("Content-Type", "application/json; charset=UTF-8");
-                         return headers;
-                     }
-                 };
+                     };
+                     QueueApplication.getHttpQueues().add(request);
+                 }
 
-                 QueueApplication.getHttpQueues().add(request);
              }
 
              @Override
