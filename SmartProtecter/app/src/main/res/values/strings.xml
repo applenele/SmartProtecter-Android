@@ -3,7 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">设置</string>
-    <string name="title_activity_login">登陆</string>
+    <string name="title_activity_login">SmartProtecter</string>
 
 
     <string name="login_label_username">帐号</string>
