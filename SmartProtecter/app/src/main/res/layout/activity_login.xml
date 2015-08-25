@@ -7,6 +7,12 @@
     android:background="@drawable/background_login">
     <!-- padding 内边距   layout_margin 外边距
             android:layout_alignParentTop 布局的位置是否处于顶部 -->
+    <ImageView
+        android:layout_width="120dip"
+        android:layout_height="120dip"
+        android:src="@drawable/app_icon"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dip"/>
     <RelativeLayout
         android:id="@+id/login_div"
         android:layout_width="fill_parent"

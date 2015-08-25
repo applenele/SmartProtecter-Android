@@ -12,12 +12,12 @@
     <RadioGroup
         android:id="@+id/tab_menu"
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:background="@color/blue"
+        android:layout_height="60dp"
+        android:background="@color/white"
         android:orientation="horizontal" >
         <RadioButton
             android:id="@+id/rbAccident"
-            android:layout_width="0dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
@@ -25,40 +25,40 @@
             android:checked="true"
             android:gravity="center_horizontal|bottom"
             android:paddingTop="2dp"
-            android:text="事故"
-            android:textColor="@drawable/tab_selector_tv_color" />
+            android:textColor="@drawable/tab_selector_tv_color"
+            android:background="@drawable/nav_home"/>
         <RadioButton
             android:id="@+id/rbPublish"
-            android:layout_width="0dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
             android:button="@null"
             android:gravity="center_horizontal|bottom"
             android:paddingTop="2dp"
-            android:text="发布"
-            android:textColor="@drawable/tab_selector_tv_color" />
+            android:textColor="@drawable/tab_selector_tv_color"
+            android:background="@drawable/nav_publish"/>
         <RadioButton
             android:id="@+id/rbMe"
-            android:layout_width="0dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
             android:button="@null"
             android:gravity="center_horizontal|bottom"
             android:paddingTop="2dp"
-            android:text="我"
-            android:textColor="@drawable/tab_selector_tv_color" />
+            android:textColor="@drawable/tab_selector_tv_color"
+            android:background="@drawable/nav_man"/>
         <RadioButton
             android:id="@+id/rbSetting"
-            android:layout_width="0dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
             android:button="@null"
             android:gravity="center_horizontal|bottom"
             android:paddingTop="2dp"
-            android:text="设置"
-            android:textColor="@drawable/tab_selector_tv_color" />
+            android:textColor="@drawable/tab_selector_tv_color"
+            android:background="@drawable/nav_setting"/>
     </RadioGroup>
 </LinearLayout>

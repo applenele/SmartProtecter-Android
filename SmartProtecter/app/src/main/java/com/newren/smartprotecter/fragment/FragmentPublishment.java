@@ -227,7 +227,7 @@ public class FragmentPublishment extends Fragment {
                                     floor.setValue(oj.getString("FloorName"));
                                     FloorArry.add(floor);
                                 }
-                                Log.d("TAG1", DistrictArry.toArray().toString());
+
 
                                 floorAdapter = new ArrayAdapter<DropFloor>(getActivity().getBaseContext(),android.R.layout.simple_spinner_item,FloorArry);
                                 floorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
