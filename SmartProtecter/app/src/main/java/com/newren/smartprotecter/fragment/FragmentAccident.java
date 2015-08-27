@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -125,6 +126,18 @@ public class FragmentAccident extends Fragment {
             }
         };
         QueueApplication.getHttpQueues().add(request);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int i=0;
+                FragmentAccidentShow accidentShow = new FragmentAccidentShow();
+                Bundle bundle = new Bundle();
+                bundle.putString("key", "asdasd");
+                accidentShow.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_content, accidentShow).commit();
+            }
+        });
 
          lv.setOnScrollListener(new AbsListView.OnScrollListener() {
              @Override

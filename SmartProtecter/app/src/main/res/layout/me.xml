@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:text="图像" />
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dip"
+        android:layout_height="60dip"
         android:id="@+id/imgPhoto" />
     <TextView
         android:layout_width="fill_parent"
