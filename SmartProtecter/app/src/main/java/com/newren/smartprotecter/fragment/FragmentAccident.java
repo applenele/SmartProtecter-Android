@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -130,10 +131,12 @@ public class FragmentAccident extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView tid = (TextView) view.findViewById(R.id.aid);
                 int i=0;
+                String aid = (String) tid.getText();
                 FragmentAccidentShow accidentShow = new FragmentAccidentShow();
                 Bundle bundle = new Bundle();
-                bundle.putString("key", "asdasd");
+                bundle.putString("key", aid);
                 accidentShow.setArguments(bundle);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_content, accidentShow).commit();
             }
@@ -146,7 +149,6 @@ public class FragmentAccident extends Fragment {
                  //new Thread(thread).start();
                  if(!lock){
                      String url = "http://121.42.136.4:9000/AccidentApi/GetAccidents?uid="+user.getId()+"&page="+page;
-                     Log.i("yy1",url);
                      JsonObjectRequest request = new JsonObjectRequest(url,null,
                              new Response.Listener<JSONObject>() {
                                  @Override

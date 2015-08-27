@@ -67,7 +67,6 @@ public class LoginActivity extends Activity {
                                 try {
                                     String msg = response.getString("Msg");
                                     String statu = response.getString("Statu");
-                                    Log.d("TAG1", response.toString());
                                     if(statu.equals("ok")){
                                         JSONObject obj = response.getJSONObject("Data");
                                         User user = new User();

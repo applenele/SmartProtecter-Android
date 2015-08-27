@@ -56,11 +56,13 @@ public class ListAccidentAdapter extends BaseAdapter {
         TextView time = (TextView) view.findViewById(R.id.txtTime);
         TextView address = (TextView) view.findViewById(R.id.txtAddress);
         TextView type = (TextView) view.findViewById(R.id.txtType);
+        TextView tvId = (TextView) view.findViewById(R.id.aid);
         ImageView statu = (ImageView) view.findViewById(R.id.imgSatu);
         description.setText(items.get(position).getDescription());
         time.setText(items.get(position).getTime().toString());
         address.setText(item.getDistrict()+"-"+item.getBuilding()+"-"+item.getFloor()+"-"+item.getRoom());
         type.setText(item.getType());
+        tvId.setText(item.getId().toString());
         if(item.getStatuAsInt()==0){
             statu.setImageResource(R.drawable.untreated);
         }
