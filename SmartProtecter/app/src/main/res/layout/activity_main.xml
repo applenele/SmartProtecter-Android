@@ -12,53 +12,39 @@
     <RadioGroup
         android:id="@+id/tab_menu"
         android:layout_width="fill_parent"
-        android:layout_height="60dp"
-        android:background="@color/white"
-        android:orientation="horizontal" >
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/main_navigation_background"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:paddingTop="2.0dip" >
+
         <RadioButton
             android:id="@+id/rbAccident"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_weight="1"
-            android:button="@null"
+            style="@style/main_tab_bottom"
             android:checked="true"
-            android:gravity="center_horizontal|bottom"
-            android:paddingTop="2dp"
-            android:textColor="@drawable/tab_selector_tv_color"
-            android:background="@drawable/nav_home"/>
+            android:drawableTop="@drawable/nav_home"
+            android:text="首页" />
+
         <RadioButton
             android:id="@+id/rbPublish"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center_horizontal|bottom"
-            android:paddingTop="2dp"
-            android:textColor="@drawable/tab_selector_tv_color"
-            android:background="@drawable/nav_publish"/>
+            style="@style/main_tab_bottom"
+            android:drawableTop="@drawable/nav_publish"
+            android:text="发布" />
+
         <RadioButton
             android:id="@+id/rbMe"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center_horizontal|bottom"
-            android:paddingTop="2dp"
-            android:textColor="@drawable/tab_selector_tv_color"
-            android:background="@drawable/nav_man"/>
+            style="@style/main_tab_bottom"
+            android:drawableTop="@drawable/nav_man"
+            android:text="我" />
+
         <RadioButton
             android:id="@+id/rbSetting"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center_horizontal|bottom"
-            android:paddingTop="2dp"
-            android:textColor="@drawable/tab_selector_tv_color"
-            android:background="@drawable/nav_setting"/>
+            style="@style/main_tab_bottom"
+            android:drawableTop="@drawable/nav_setting"
+            android:layout_marginRight="26dip"
+            android:text="设置" />
+
+
     </RadioGroup>
 </LinearLayout>
