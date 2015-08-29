@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,9 @@ public class FragmentAccidentShow extends Fragment {
     private TextView tvAddress = null;
     private  TextView tvType = null;
     private  TextView tvDescription = null;
+    private TextView tvAId = null;
+    private Button btnSub = null;
+    private TextView tvReply = null;
     private Handler handler=new Handler(){
         public void handleMessage(Message msg){
             Toast toast= Toast.makeText(getActivity(), msg.obj.toString(), Toast.LENGTH_SHORT);
@@ -54,6 +58,9 @@ public class FragmentAccidentShow extends Fragment {
         tvAddress = (TextView) myView.findViewById(R.id.txtAddress);
         tvType = (TextView) myView.findViewById(R.id.txtType);
         tvDescription = (TextView) myView.findViewById(R.id.txtDescription);
+        tvAId = (TextView) myView.findViewById(R.id.aid);
+        btnSub = (Button) myView.findViewById(R.id.btnSub);
+        tvReply = (TextView) myView.findViewById(R.id.txtReply);
         String i = getArguments().getString("key");
         Log.i("id", i);
         String url = "http://121.42.136.4:9000/AccidentApi/GetAccident?id="+i;
@@ -80,6 +87,7 @@ public class FragmentAccidentShow extends Fragment {
                                 tvTime.setText(accident.getTime().toString());
                                 tvAddress.setText(accident.getDistrict() + "-" + accident.getBuilding() + "-" + accident.getFloor() + "-" + accident.getRoom());
                                 tvType.setText(accident.getType());
+                                tvAId.setText(accident.getId().toString());
                             }else{
                                 MsgThread msgThread = new MsgThread(msg);
                                 new Thread(msgThread).start();
@@ -107,6 +115,13 @@ public class FragmentAccidentShow extends Fragment {
         };
         QueueApplication.getHttpQueues().add(request);
 
+        btnSub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String content = (String) tvReply.getText();
+                Log.i("content",content);
+            }
+        });
 
         return myView;
     }
