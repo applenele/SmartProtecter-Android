@@ -65,7 +65,8 @@
         android:text="@string/publishment_label_description"
         />
     <EditText android:id="@+id/txtDescription"
-        android:layout_width="fill_parent" android:layout_height="wrap_content">
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
     </EditText>
     <Button
         android:id="@+id/btnPublish"
