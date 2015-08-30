@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,8 +19,10 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.newren.smartprotecter.Adapter.ListReplyAdapter;
 import com.newren.smartprotecter.R;
 import com.newren.smartprotecter.model.Accident;
+import com.newren.smartprotecter.model.Reply;
 import com.newren.smartprotecter.model.User;
 import com.newren.smartprotecter.util.QueueApplication;
 
@@ -47,6 +50,10 @@ public class FragmentAccidentShow extends Fragment {
     private TextView tvAId = null;
     private Button btnSub = null;
     private EditText tvReply = null;
+    private ListView lv = null;
+    private ListReplyAdapter adapter =null;
+    private TextView tvAid = null;
+
     private Handler handler=new Handler(){
         public void handleMessage(Message msg){
             Toast toast= Toast.makeText(getActivity(), msg.obj.toString(), Toast.LENGTH_SHORT);
@@ -65,8 +72,9 @@ public class FragmentAccidentShow extends Fragment {
         tvAId = (TextView) myView.findViewById(R.id.aid);
         btnSub = (Button) myView.findViewById(R.id.btnSub);
         tvReply = (EditText) myView.findViewById(R.id.txtReply);
+        lv = (ListView) myView.findViewById(R.id.lstReply);
+        tvAid = (TextView) myView.findViewById(R.id.aid);
         String i = getArguments().getString("key");
-        Log.i("id", i);
         String url = "http://121.42.136.4:9000/AccidentApi/GetAccident?id="+i;
         JsonObjectRequest request = new JsonObjectRequest(url,null,
                 new Response.Listener<JSONObject>() {
@@ -92,6 +100,22 @@ public class FragmentAccidentShow extends Fragment {
                                 tvAddress.setText(accident.getDistrict() + "-" + accident.getBuilding() + "-" + accident.getFloor() + "-" + accident.getRoom());
                                 tvType.setText(accident.getType());
                                 tvAId.setText(accident.getId().toString());
+
+                                JSONArray objJsonArry = obj.getJSONArray("Replies");
+                                List<Reply> replyList = new ArrayList<Reply>();
+                                for(int i=0;i<objJsonArry.length();i++){
+                                    Reply reply = new Reply();
+                                    JSONObject oj = objJsonArry.getJSONObject(i);
+                                    reply.setId(oj.getInt("ID"));
+                                    reply.setUserId(oj.getInt("UserID"));
+                                    reply.setAccidentId(oj.getInt("AccidentID"));
+                                    reply.setTime(oj.getString("Time"));
+                                    reply.setDescription(oj.getString("Description"));
+                                    reply.setUserName(oj.getString("Username"));
+                                    replyList.add(reply);
+                                }
+                                adapter = new ListReplyAdapter(getActivity(), replyList);
+                                lv.setAdapter(adapter);
                             }else{
                                 MsgThread msgThread = new MsgThread(msg);
                                 new Thread(msgThread).start();
@@ -138,8 +162,12 @@ public class FragmentAccidentShow extends Fragment {
                                     String msg = response.getString("Msg");
                                     String statu = response.getString("Statu");
                                     if(statu.equals("ok")){
-                                        MsgThread msgThread = new MsgThread("提交成功！");
-                                        new Thread(msgThread).start();
+                                        String aid = (String) tvAid.getText();
+                                        FragmentAccidentShow accidentShow = new FragmentAccidentShow();
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("key", aid);
+                                        accidentShow.setArguments(bundle);
+                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_content, accidentShow).commit();
                                     }else{
                                         MsgThread msgThread = new MsgThread(msg);
                                         new Thread(msgThread).start();

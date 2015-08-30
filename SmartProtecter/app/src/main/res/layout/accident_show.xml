@@ -71,5 +71,9 @@
             android:layout_height="wrap_content"
             android:text="回复"
             android:id="@+id/btnSub"/>
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lstReply"></ListView>
     </LinearLayout >
 </LinearLayout>

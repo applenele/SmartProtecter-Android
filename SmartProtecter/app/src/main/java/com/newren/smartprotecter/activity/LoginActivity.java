@@ -60,6 +60,7 @@ public class LoginActivity extends Activity {
                 String  password  = txtPassword.getText().toString();
 
                 String url = "http://121.42.136.4:9000/UserApi/Login?username="+username+"&password="+password;
+
                 JsonObjectRequest request = new JsonObjectRequest(url,null,
                         new Response.Listener<JSONObject>() {
                             @Override
@@ -92,6 +93,7 @@ public class LoginActivity extends Activity {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                Log.i("err",error.getMessage());
                                 MsgThread msgThread = new MsgThread("出现异常");
                                 new Thread(msgThread).start();
                             }
