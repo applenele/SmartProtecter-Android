@@ -2,7 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="事故展示"
+        android:textSize="20dip"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -12,51 +17,51 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:textSize="22px"
+        android:textSize="20dip"
         android:text="时间"
         />
     <TextView android:id="@+id/txtTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:textSize="22px"
+        android:textSize="20dip"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:textSize="22px"
+        android:textSize="20dip"
         android:text="地址"
         />
     <TextView android:id="@+id/txtAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:textSize="22px" />
+        android:textSize="20dip" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:textSize="22px"
+        android:textSize="20dip"
         android:text="事故类型"
         />
     <TextView android:id="@+id/txtType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:textSize="22px" />
+        android:textSize="20dip" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:textSize="22px"
+        android:textSize="20dip"
         android:text="描述"
         />
     <TextView android:id="@+id/txtDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:textSize="22px" />
+        android:textSize="20dip" />
 
     <LinearLayout
         android:layout_width="match_parent"
