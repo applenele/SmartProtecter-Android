@@ -60,6 +60,7 @@ public class ListReplyAdapter extends BaseAdapter {
         TextView tvTime = (TextView) view.findViewById(R.id.txtReplyTime);
         TextView tvDescription = (TextView) view.findViewById(R.id.txtReply);
         TextView tvUsername =  (TextView) view.findViewById(R.id.txtUsername);
+
         tvTime.setText(item.getTime());
         tvDescription.setText(item.getDescription());
         tvUsername.setText(item.getUserName());

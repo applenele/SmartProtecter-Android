@@ -70,7 +70,7 @@ public class FragmentAccident extends Fragment {
         lv = (ListView) myView.findViewById(R.id.lstAccident);
         page =0;
         lock = false;
-        String url = "http://121.42.136.4:9000/AccidentApi/GetAccidents?uid="+user.getId()+"&page="+page;
+        String url = "http://121.42.136.4:9000/AccidentApi/GetAccidents?page="+page;
         JsonObjectRequest request = new JsonObjectRequest(url,null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -148,7 +148,7 @@ public class FragmentAccident extends Fragment {
                  //MsgThread thread = new MsgThread("xialaceshi ");
                  //new Thread(thread).start();
                  if(!lock){
-                     String url = "http://121.42.136.4:9000/AccidentApi/GetAccidents?uid="+user.getId()+"&page="+page;
+                     String url = "http://121.42.136.4:9000/AccidentApi/GetAccidents?page="+page;
                      JsonObjectRequest request = new JsonObjectRequest(url,null,
                              new Response.Listener<JSONObject>() {
                                  @Override

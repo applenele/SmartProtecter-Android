@@ -53,7 +53,7 @@ public class FragmentAccidentShow extends Fragment {
     private ListView lv = null;
     private ListReplyAdapter adapter =null;
     private TextView tvAid = null;
-
+    private TextView tvUser = null;
     private Handler handler=new Handler(){
         public void handleMessage(Message msg){
             Toast toast= Toast.makeText(getActivity(), msg.obj.toString(), Toast.LENGTH_SHORT);
@@ -74,6 +74,7 @@ public class FragmentAccidentShow extends Fragment {
         tvReply = (EditText) myView.findViewById(R.id.txtReply);
         lv = (ListView) myView.findViewById(R.id.lstReply);
         tvAid = (TextView) myView.findViewById(R.id.aid);
+        tvUser = (TextView) myView.findViewById(R.id.txtUser);
         String i = getArguments().getString("key");
         String url = "http://121.42.136.4:9000/AccidentApi/GetAccident?id="+i;
         JsonObjectRequest request = new JsonObjectRequest(url,null,
@@ -95,12 +96,13 @@ public class FragmentAccidentShow extends Fragment {
                                 accident.setRoom(obj.getString("Room"));
                                 accident.setType(obj.getString("AccidentType"));
                                 accident.setStatuAsInt(obj.getInt("Statu"));
+                                accident.setUserNmae(obj.getString("Username"));
                                 tvDescription.setText(accident.getDescription());
                                 tvTime.setText(accident.getTime().toString());
                                 tvAddress.setText(accident.getDistrict() + "-" + accident.getBuilding() + "-" + accident.getFloor() + "-" + accident.getRoom());
                                 tvType.setText(accident.getType());
                                 tvAId.setText(accident.getId().toString());
-
+                                tvUser.setText(accident.getUserNmae().toString());
                                 JSONArray objJsonArry = obj.getJSONArray("Replies");
                                 List<Reply> replyList = new ArrayList<Reply>();
                                 for(int i=0;i<objJsonArry.length();i++){

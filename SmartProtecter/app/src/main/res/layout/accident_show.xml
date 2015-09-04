@@ -18,6 +18,19 @@
         android:layout_height="wrap_content"
         android:textColor="#000000"
         android:textSize="20dip"
+        android:text="发布者"
+        />
+    <TextView android:id="@+id/txtUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="20dip"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="20dip"
         android:text="时间"
         />
     <TextView android:id="@+id/txtTime"
