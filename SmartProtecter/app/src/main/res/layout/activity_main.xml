@@ -4,6 +4,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     tools:context="com.example.googlebottomfragment.MainActivity" >
+
     <FrameLayout
         android:id="@+id/main_content"
         android:layout_width="fill_parent"
