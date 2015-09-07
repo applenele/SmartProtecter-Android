@@ -8,4 +8,20 @@
         android:text="setting"
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我的发布"
+        android:id="@+id/btnMyPublish"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="退出"
+        android:id="@+id/btnLogout"
+        android:layout_gravity="center_horizontal" />
+
+
 </LinearLayout>
