@@ -1,8 +1,6 @@
 package com.newren.smartprotecter.model;
 
-/**
- * Created by ÀÖ on 2015/8/24.
- */
+
 public class User {
 
     private Integer id;

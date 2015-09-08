@@ -2,17 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:layout_marginLeft="20dip"
+    >
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="用户个人信息"
         android:textSize="20dip"
+        android:layout_marginTop="20dip"
         />
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="图像" />
+        android:text="图像"
+        android:layout_marginTop="10dip"
+        />
     <ImageView
         android:layout_width="60dip"
         android:layout_height="60dip"
@@ -21,6 +26,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="姓名"
+        android:layout_marginTop="10dip"
         />
     <TextView android:id="@+id/txtName"
         android:layout_width="fill_parent"
@@ -29,6 +35,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="工号"
+        android:layout_marginTop="10dip"
         />
     <TextView android:id="@+id/txtNumber"
         android:layout_width="fill_parent"
@@ -37,6 +44,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="性别"
+        android:layout_marginTop="10dip"
         />
     <TextView android:id="@+id/txtSex"
         android:layout_width="fill_parent"
@@ -45,6 +53,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="角色"
+        android:layout_marginTop="10dip"
         />
     <TextView android:id="@+id/txtRole"
         android:layout_width="fill_parent"

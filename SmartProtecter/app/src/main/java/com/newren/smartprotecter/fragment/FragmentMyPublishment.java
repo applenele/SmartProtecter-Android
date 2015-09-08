@@ -75,7 +75,6 @@ public class FragmentMyPublishment extends Fragment {
 
         myView = inflater.inflate(R.layout.accident, container, false);
         lv = (ListView) myView.findViewById(R.id.lstAccident);
-        User user = QueueApplication.getUser();
         page =0;
         lock = false;
         String url = "http://121.42.136.4:9000/AccidentApi/GetAccidentsByUser?uid="+user.getId()+"&page="+page;
@@ -151,6 +150,7 @@ public class FragmentMyPublishment extends Fragment {
         });
 
         lv.setOnScrollListener(new AbsListView.OnScrollListener() {
+
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 //MsgThread thread = new MsgThread("xialaceshi ");

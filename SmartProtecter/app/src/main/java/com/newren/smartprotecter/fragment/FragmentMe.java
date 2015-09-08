@@ -25,9 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * Created by ¿÷ on 2015/8/24.
- */
+
 public class FragmentMe extends Fragment {
     private TextView txtName = null;
     private TextView txtNumber = null;
