@@ -113,7 +113,7 @@ public class FragmentAccidentShow extends Fragment {
                                 List<Reply> replyList = new ArrayList<Reply>();
                                 ImageLoader imageLoader = new ImageLoader(QueueApplication.getHttpQueues(), new BitmapCache());
 
-                                ImageLoader.ImageListener listener = ImageLoader.getImageListener(imgPhoto,R.drawable.userphoto, R.drawable.userphoto);
+                                ImageLoader.ImageListener listener = ImageLoader.getImageListener(imgPhoto,R.drawable.app_icon, R.drawable.app_icon);
                                 imageLoader.get("http://121.42.136.4:9000/" + accident.getImagePath(), listener);
                                 for(int i=0;i<objJsonArry.length();i++){
                                     Reply reply = new Reply();
