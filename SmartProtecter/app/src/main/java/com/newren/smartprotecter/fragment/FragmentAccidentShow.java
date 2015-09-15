@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,12 +19,14 @@ import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.newren.smartprotecter.Adapter.ListReplyAdapter;
 import com.newren.smartprotecter.R;
 import com.newren.smartprotecter.model.Accident;
 import com.newren.smartprotecter.model.Reply;
 import com.newren.smartprotecter.model.User;
+import com.newren.smartprotecter.util.BitmapCache;
 import com.newren.smartprotecter.util.QueueApplication;
 
 import org.json.JSONArray;
@@ -46,6 +49,7 @@ public class FragmentAccidentShow extends Fragment {
     private TextView tvTime = null;
     private TextView tvAddress = null;
     private  TextView tvType = null;
+    private ImageView imgPhoto = null;
     private  TextView tvDescription = null;
     private TextView tvAId = null;
     private Button btnSub = null;
@@ -75,7 +79,9 @@ public class FragmentAccidentShow extends Fragment {
         lv = (ListView) myView.findViewById(R.id.lstReply);
         tvAid = (TextView) myView.findViewById(R.id.aid);
         tvUser = (TextView) myView.findViewById(R.id.txtUser);
+        imgPhoto = (ImageView) myView.findViewById(R.id.accidentPhoto);
         String i = getArguments().getString("key");
+        final Accident accident = new Accident();
         String url = "http://121.42.136.4:9000/AccidentApi/GetAccident?id="+i;
         JsonObjectRequest request = new JsonObjectRequest(url,null,
                 new Response.Listener<JSONObject>() {
@@ -86,7 +92,6 @@ public class FragmentAccidentShow extends Fragment {
                             String statu = response.getString("Statu");
                             if(statu.equals("ok")){
                                 JSONObject obj = response.getJSONObject("Data");
-                                Accident accident = new Accident();
                                 accident.setId(obj.getInt("ID"));
                                 accident.setDescription(obj.getString("Description"));
                                 accident.setTime(obj.get("Time").toString());
@@ -97,6 +102,7 @@ public class FragmentAccidentShow extends Fragment {
                                 accident.setType(obj.getString("AccidentType"));
                                 accident.setStatuAsInt(obj.getInt("Statu"));
                                 accident.setUserNmae(obj.getString("Username"));
+                                accident.setImagePath(obj.getString("ImagePath"));
                                 tvDescription.setText(accident.getDescription());
                                 tvTime.setText(accident.getTime().toString());
                                 tvAddress.setText(accident.getDistrict() + "-" + accident.getBuilding() + "-" + accident.getFloor() + "-" + accident.getRoom());
@@ -105,6 +111,10 @@ public class FragmentAccidentShow extends Fragment {
                                 tvUser.setText(accident.getUserNmae().toString());
                                 JSONArray objJsonArry = obj.getJSONArray("Replies");
                                 List<Reply> replyList = new ArrayList<Reply>();
+                                ImageLoader imageLoader = new ImageLoader(QueueApplication.getHttpQueues(), new BitmapCache());
+
+                                ImageLoader.ImageListener listener = ImageLoader.getImageListener(imgPhoto,R.drawable.userphoto, R.drawable.userphoto);
+                                imageLoader.get("http://121.42.136.4:9000/" + accident.getImagePath(), listener);
                                 for(int i=0;i<objJsonArry.length();i++){
                                     Reply reply = new Reply();
                                     JSONObject oj = objJsonArry.getJSONObject(i);
@@ -144,6 +154,8 @@ public class FragmentAccidentShow extends Fragment {
             }
         };
         QueueApplication.getHttpQueues().add(request);
+
+
 
         btnSub.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -69,10 +69,46 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
     </EditText>
-    <Button
-        android:id="@+id/btnPublish"
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="图片"
+        />
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="发布"
-        />
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnTakePicture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="拍照" />
+        <ImageView
+            android:id="@+id/imt_photo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="2dp" >
+        </ImageView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnPublish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发布"
+            />
+        <Button
+            android:id="@+id/btnPublish2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发布2"
+            />
+        </LinearLayout>
+
 </LinearLayout>

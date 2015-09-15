@@ -27,6 +27,16 @@ public class Accident  {
 
     private Integer statuAsInt;
 
+    private String imagePath;
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     public Integer getId() {
         return id;
     }

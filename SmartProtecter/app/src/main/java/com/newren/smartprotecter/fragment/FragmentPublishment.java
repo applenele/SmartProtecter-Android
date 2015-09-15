@@ -1,9 +1,15 @@
 package com.newren.smartprotecter.fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,12 +36,17 @@ import com.newren.smartprotecter.datamodel.DropDistrict;
 import com.newren.smartprotecter.datamodel.DropFloor;
 import com.newren.smartprotecter.datamodel.DropRoom;
 import com.newren.smartprotecter.model.User;
+import com.newren.smartprotecter.util.HttpPost;
 import com.newren.smartprotecter.util.QueueApplication;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
@@ -60,8 +72,24 @@ public class FragmentPublishment extends Fragment {
     private List<DropAccidentType> AccidentTypeArry = null;
     private ArrayAdapter<DropDistrict> districtAdapter;
 
+
+
     private ArrayAdapter<DropFloor> floorAdapter;
     private ArrayAdapter<DropAccidentType> accidentTypeAdapter;
+
+    private static final int PHOTO_CAPTURE = 0x11;
+    private static String photoPath = "/sdcard/smartprotecter/";
+    private static String photoName = photoPath + "laolisb.jpg";
+    Uri imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "image.jpg"));//第二个参数是临时文件，在后面将会被修改
+    private Button btnTakePhoto;//拍照与下载
+    private ImageView img_photo;//显示图片
+    private String newName = "laoli.jpg";
+    private Button btnPublish2 =null;
+    /*
+     * 这里的代码应该有问题
+     */
+    private String uploadFile = "/sdcard/smartprotecter/laolisb.jpg";
+    private String actionUrl = "http://121.42.136.4:9000/AccidentApi/Publishment2";// private String actionUrl = "http://192.168.0.104:8080/File/UploadAction";
 
     private Handler handler=new Handler(){
         public void handleMessage(Message msg){
@@ -70,11 +98,73 @@ public class FragmentPublishment extends Fragment {
         }
     };
 
+    private Handler reflresh =new Handler(){
+        public void handleMessage(Message msg){
+            switch (msg.what) {
+                case 1:
+                    FragmentAccident accident = new FragmentAccident();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_content, accident).commit();
+            }
+        }
+    };
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        Log.i("hou","actionretext");
+        super.onActivityResult(requestCode, resultCode, data);
+        String sdStatus = Environment.getExternalStorageState();
+        switch (requestCode) {
+            case PHOTO_CAPTURE:
+                if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) {
+                    Log.i("内存卡错误", "请检查您的内存卡");
+                } else {
+                    BitmapFactory.Options op = new BitmapFactory.Options();
+                    // 设置图片的大小
+                    Bitmap bitMap = BitmapFactory.decodeFile(photoName);
+                    int width = bitMap.getWidth();
+                    int height = bitMap.getHeight();
+                    // 设置想要的大小
+                    int newWidth = 480;
+                    int newHeight = 640;
+                    // 计算缩放比例
+                    float scaleWidth = ((float) newWidth) / width;
+                    float scaleHeight = ((float) newHeight) / height;
+                    // 取得想要缩放的matrix参数
+                    Matrix matrix = new Matrix();
+                    matrix.postScale(scaleWidth, scaleHeight);
+                    // 得到新的图片
+                    bitMap = Bitmap.createBitmap(bitMap, 0, 0, width, height, matrix, true);
+
+                    // canvas.drawBitmap(bitMap, 0, 0, paint)
+                    // 防止内存溢出
+                    op.inSampleSize = 4; // 这个数字越大,图片大小越小.
+
+                    Bitmap pic = null;
+                    pic = BitmapFactory.decodeFile(photoName, op);
+                    img_photo.setImageBitmap(pic); // 这个ImageView是拍照完成后显示图片
+                    FileOutputStream b = null;
+                    ;
+                    try {
+                        b = new FileOutputStream(photoName);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    if (pic != null) {
+                        pic.compress(Bitmap.CompressFormat.JPEG, 50, b);
+                    }
+                }
+                break;
+            default:
+                return;
+        }
     }
 
     @Override
@@ -90,6 +180,60 @@ public class FragmentPublishment extends Fragment {
         dropFloor  = (Spinner) myView.findViewById(R.id.dropFloor);
         dropRoom = (Spinner) myView.findViewById(R.id.dropRoom);
         dropAccidentType = (Spinner) myView.findViewById(R.id.dropAccidentType);
+        btnTakePhoto = (Button) myView.findViewById(R.id.btnTakePicture);
+        btnPublish2 = (Button) myView.findViewById(R.id.btnPublish2);
+        img_photo = (ImageView) myView.findViewById(R.id.imt_photo);
+        btnTakePhoto.setOnClickListener(new Photo());
+
+        btnPublish2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DropDistrict d = (DropDistrict) dropDistrict.getSelectedItem();
+                DropBuilding building = (DropBuilding) dropBuilding.getSelectedItem();
+                DropFloor floor = (DropFloor) dropFloor.getSelectedItem();
+                DropRoom room = (DropRoom) dropRoom.getSelectedItem();
+                DropAccidentType type = (DropAccidentType) dropAccidentType.getSelectedItem();
+                String description = txtDescription.getText().toString();
+                String buildingId = building.getKey();
+                String districtId = d.getKey();
+                String sfloor = floor.getValue();
+                String sroom = room.getValue();
+                String stype = type.getValue();
+                Integer uid = QueueApplication.getUser().getId();
+                // String params = null;
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("districtId", districtId);
+                params.put("buildingId", buildingId);
+                params.put("uid", uid.toString());
+                params.put("floor", sfloor);
+                params.put("room", sroom);
+                params.put("type", stype);
+                params.put("description", description);
+
+                final Map<String, File> files = new HashMap<String, File>();
+
+                files.put(System.currentTimeMillis() + ".jpg", new File(uploadFile));
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String str = null;
+                        try {
+                            str = HttpPost.post(actionUrl, params, files);
+                            FlreshThread rThread = new FlreshThread();
+                            new Thread(rThread).start();
+                        } catch (Exception e) {
+                            MsgThread msgThread = new MsgThread("发表失败");
+                            new Thread(msgThread).start();
+                            Log.i("log1111",e.getMessage());
+                        }
+                    }
+                }).start();
+
+            }
+        });
+
+
 
         btnPublish.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,6 +297,8 @@ public class FragmentPublishment extends Fragment {
                 QueueApplication.getHttpQueues().add(publishmentrequest);
             }
         });
+
+
 
         String url = "http://121.42.136.4:9000/AccidentApi/GetDistricts";
         JsonObjectRequest request = new JsonObjectRequest(url,null,
@@ -313,8 +459,51 @@ public class FragmentPublishment extends Fragment {
         return myView;
     }
 
+    class Photo implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
 
-    private class MsgThread implements Runnable{
+            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+            //"/sdcard/AnBo/";
+            File file = new File(photoPath);
+            if (!file.exists()) { // 检查图片存放的文件夹是否存在
+                file.mkdir();
+            }
+
+            File photo = new File(photoName);
+            imageUri = Uri.fromFile(photo);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri); // 这样就将文件的存储方式和uri指定到了Camera应用中
+            startActivityForResult(intent, PHOTO_CAPTURE);
+        }
+
+    }
+
+    public void uploadPhoto() {
+        Map<String, String> params = new HashMap<String, String>();
+        Map<String, File> files = new HashMap<String, File>();
+        files.put(System.currentTimeMillis()+".jpg", new File(uploadFile));//uploadFile = "/sdcard/AnBo/laolisb.jpg";
+        try {
+            String str = HttpPost.post(actionUrl, params, files);
+            System.out.println("str--->>>" + str);
+        } catch (Exception e) {
+        }
+    }
+
+    class FlreshThread implements Runnable {
+        public void run() {
+            //执行数据操作，不涉及到UI
+            Message msg = new Message();
+            msg.what = 1;
+            //这三句可以传递数据
+            //  Bundle data = new Bundle();
+            // data.putInt("COUNT", 100);//COUNT是标签,handleMessage中使用
+            // msg.setData(data);
+
+            reflresh.sendMessage(msg); // 向Handler发送消息,更新UI
+        }
+    }
+
+        private class MsgThread implements Runnable{
         private  String msg = "";
         public  MsgThread(String msg){
             this.msg = msg;
